@@ -11,7 +11,6 @@
     </style>
   </head>
   <body>
-    <h1>Hello World</h1>
     <div id="map"></div>
     <script>
     	mapboxgl.accessToken = 'pk.eyJ1IjoiY29tZW1zIiwiYSI6ImNrbmFoczh2YTBud3kyb255Z3UycTYwd3QifQ.nb8AQpjW3AL0VEgS8lmS3g';
@@ -21,17 +20,36 @@
       });
 
       map.on('load', () => {
-        map.addSource('portland', {
+        map.addSource('1766', {
           'type': 'raster',
-          'url': './1766.tif'
+          //'url': './1766.tif'
+          'url': 'https://github.com/ComeMS/ComeMS.github.io/blob/main/1766.tif'
         });
-
         map.addLayer({
-          'id': 'portland',
-          'source': 'portland',
+          'id': '1766',
+          'source': '1766',
           'type': 'raster'
         });
-      });
+
+        map.addSource("myImageSource", {
+          "type": "image",
+          'url': 'https://github.com/ComeMS/ComeMS.github.io/blob/main/1766.tif',
+          "coordinates": [
+            [2.169597300, 48.718877200],
+            [2.209699000, 48.718877200],
+            [2.209699000, 48.675509100],
+            [2.169597300, 48.675509100]
+          ]
+        });
+        map.addLayer({
+            "id": "overlay",
+            "source": "myImageSource",
+            "type": "raster",
+            "paint": {
+              "raster-opacity": 0.85
+            }
+          });
+        });
     </script>
   </body>
 </html>
