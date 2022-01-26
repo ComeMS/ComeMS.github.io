@@ -1,66 +1,79 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="utf-8">
-<title>Swipe between centuries</title>
-<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-<link href="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.css" rel="stylesheet">
-<script src="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js"></script>
+<title>Cartes commerces</title>
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
+
 <style>
 body { margin: 0; padding: 0; }
-#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+ .mapboxgl-map { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+ #legend{
+   width: 20vw;
+   position: relative;
+   background-color: #fff8;
+   margin: 20px;
+   padding: 10px;
+   z-index: 1;
+ }
+ h1{
+   text-align: center;
+ }
+ table{
+   background-color: #fffb;
+ }
+ th{
+   width: 50px;
+ }
+ td{
+   padding: 5px;
+ }
 </style>
 </head>
+
 <body>
-<style>
-body {
-overflow: hidden;
-}
-
-body * {
--webkit-touch-callout: none;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-}
-
-.map {
-position: absolute;
-top: 0;
-bottom: 0;
-width: 100%;
-}
-</style>
-<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.4.0/mapbox-gl-compare.js"></script>
-<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.4.0/mapbox-gl-compare.css" type="text/css">
-<div id="comparison-container">
-<div id="before" class="map"></div>
-<div id="after" class="map"></div>
-</div>
+  <div id='map-commerces'>
+    <div id='legend'>
+      <h1>Légende</h1>
+      <table>
+        <tbody>
+          <tr>
+            <th style="background-color: #f5f500;">Label 5/5</th>
+            <td>Centres villes principaux ou le long des axes.</td>
+          </tr>
+          <tr>
+            <th style="background-color: #f87637;">Label 4/5</th>
+            <td>Centres villes secondaires et périphérie des zones 5/5.</td>
+          </tr>
+          <tr>
+            <th style="background-color: #d3436e; color: #fff;">Label 3/5</th>
+            <td>Liaisons entre centres villes et points de commerces hors centre-ville.</td>
+          </tr>
+          <tr>
+            <th style="background-color: #5f187f; color: #fff">Label 2/5</th>
+            <td>Liaisons entre villes et périphérie des zones 3/5.</td>
+          </tr>
+          <tr>
+            <th style="background-color: #231151; color: #fff;">Label 1/5</th>
+            <td>Périphérie des villes et champs.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 <script>
-	mapboxgl.accessToken = 'pk.eyJ1IjoiY29tZW1zIiwiYSI6ImNrbmFoczh2YTBud3kyb255Z3UycTYwd3QifQ.nb8AQpjW3AL0VEgS8lmS3g';
-const beforeMap = new mapboxgl.Map({
-container: 'before',
-style: 'mapbox://styles/comems/ckwfa42yt57hk15qokr9bwr07',
-center: [0, 0],
-zoom: 0
-});
 
-const afterMap = new mapboxgl.Map({
-container: 'after',
-style: 'mapbox://styles/comems/ckweupxb33bsc14oc5ifapetl',
-center: [0, 0],
-zoom: 0
-});
+mapboxgl.accessToken = 'pk.eyJ1IjoiY29tZW1zIiwiYSI6ImNrbmFoczh2YTBud3kyb255Z3UycTYwd3QifQ.nb8AQpjW3AL0VEgS8lmS3g';
+var map= new mapboxgl.Map({ container: 'map-commerces', style: 'mapbox://styles/comems/cknoe1mui54tr17qzl3xzqb87'});
+map.addControl(new MapboxGeocoder({accessToken: mapboxgl.accessToken, mapboxgl: mapboxgl}));
+map.addControl(new mapboxgl.NavigationControl());
+map.addControl(new mapboxgl.ScaleControl({maxWidth: 200}));
 
-// A selector or reference to HTML element
-const container = '#comparison-container';
-
-const map = new mapboxgl.Compare(beforeMap, afterMap, container, {
-// Set this to enable comparing two maps by mouse movement:
-// mousemove: true
-});
 </script>
 
 </body>
